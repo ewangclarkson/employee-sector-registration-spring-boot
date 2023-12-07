@@ -18,19 +18,19 @@ Clone this repository to your local machine:
 
 #####React Front End
 ```
-git clone https://github.com/ewangclarkson/hk-sar-react-authention.git
+git clone https://github.com/ewangclarkson/employee-sector-registration-react.git
 ```
 
 
 #####Spring boot backend
 ```
-git clone https://github.com/ewangclarkson/hk-sar-spring-boot-authention.git
+git clone https://github.com/ewangclarkson/employee-sector-registration-spring-boot.git
 ```
 
 ####Navigate to the project directory:
 
 ```
-cd hk-sar-spring-boot-athentication
+cd employee-sector-registration-spring-boot
 ```
 
 ###Install the dependencies:
