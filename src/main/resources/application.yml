@@ -1,6 +1,6 @@
 spring:
   application:
-    name: hk-sar
+    name: employee-sector-registeration
   datasource:
     driver-class-name:  com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/hk-sar?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
