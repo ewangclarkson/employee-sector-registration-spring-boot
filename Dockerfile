@@ -3,18 +3,21 @@
 #COPY /*.jar app.jar
 #ENTRYPOINT ["java","-jar","/app.jar"]
 
-FROM eclipse-temurin:17-jdk-jammy AS build
-ENV HOME=/usr/app
-RUN mkdir -p $HOME
-WORKDIR $HOME
-ADD . $HOME
-RUN --mount=type=cache,target=/root/.m2 ./mvnw -f $HOME/pom.xml clean package
+FROM eclipse-temurin:17-jdk-alpine as build
+WORKDIR /workspace/app
 
-#
-# Package stage
-#
-FROM eclipse-temurin:17-jre-jammy
-ARG JAR_FILE=/usr/app/target/*.jar
-COPY --from=build $JAR_FILE /app/runner.jar
-EXPOSE 8080
-ENTRYPOINT java -jar /app/runner.jar
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
+COPY src src
+
+RUN ./mvnw install -DskipTests
+RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
+
+FROM eclipse-temurin:17-jdk-alpine
+VOLUME /tmp
+ARG DEPENDENCY=/workspace/app/target/dependency
+COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
+COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
+COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
+ENTRYPOINT ["java","-cp","app:app/lib/*","hello.Application"]
